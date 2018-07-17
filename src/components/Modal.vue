@@ -5,14 +5,14 @@
 				&times;
 			</div>
 			<div class="modal-content">
-				all the content goes here.
+				Game Over, Man! {{this.theWinner}} wins. Play again?
 			</div>		
 		</div>	
 	</div>
 </template>
 
 <script>
-
+	
 </script>
 
 <style lang="scss">

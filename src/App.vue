@@ -17,11 +17,13 @@
 			<div class="column">
 				<custom-button :button-style="'green'" @pressed="handleAttackButton"></custom-button>
 				<custom-button :button-style="'red'" @pressed="handleSpecialAttackButton"></custom-button>
+				<button id="show-modal" @click="this.showModal = true">Show Modal</button>
 			</div>
 			<div class="column">
 				<log :messages="messageLog"></log>
 			</div>
 		</div>
+		<modal  v-show="showModal"></modal>
 		<!-- modal -->
 			<!-- Game over text -->
 			<!-- Button (plain) -->
@@ -33,6 +35,7 @@
 
 import CustomButton from './components/Button';
 import HealthMeter from './components/HealthMeter';
+import Modal from './components/Modal';
 import Log from './components/Log';
 
 export default {
@@ -43,7 +46,8 @@ export default {
 			messageLog: [],
 			showModal: false,
 			gameInPlay: true,
-			gameOverMessage: ""
+			gameOverMessage: "",
+			theWinner: ""
 		}
 	},
 	methods: {
@@ -57,9 +61,7 @@ export default {
 			let playerDamage = this.getRandomDamageAmount(5,9);
 			this.playerHealth = this.playerHealth - playerDamage;
 			this.messageLog.push(`Opponent attacks and does ${playerDamage} damage.`);
-			if (this.playerHealth < 1 || this.opponentHealth < 1) {
-				handleGameOver();
-			} 
+			this.handleScoreKeeping();
 		},
 		handleSpecialAttackButton: function(){
 			let opponentDamage = this.getRandomDamageAmount(8,12);
@@ -67,19 +69,33 @@ export default {
 			this.messageLog.push(`Player used Special Attack and did ${opponentDamage} damage.`);
 			let playerDamage = this.getRandomDamageAmount(8,12);
 			this.playerHealth = this.playerHealth - playerDamage;
-			this.messageLog.push(`Opponent attacks and does ${playerDamage} damage.`);
+			this.messageLog.push(`Opponent attacks and does ${playerDamage} damage.`); 
+			this.handleScoreKeeping();
+		},
+		handleScoreKeeping: function(){
 			if (this.playerHealth < 1 || this.opponentHealth < 1) {
-				handleGameOver();
-			}
+				if (this.playerHealth >= this.opponentHealth) {
+					this.theWinner = "Player"
+				} else {
+					this.theWinner = "Opponent"
+				}
+				
+				this.handleGameOver();
+			} 
 		},
 		handleGameOver: function(){
-			alert('game over, man!');
+			//this.showModal = true;
+			this.gameInPlay = false;
+			this.showModal = true;
+			this.gameOverMessage = `Game Over, Man! ${this.theWinner} wins. Play again?`;
+			//alert(this.gameOverMessage);
 		}
 	},
 	components: {
 		CustomButton,
 		Log,
-		HealthMeter
+		HealthMeter,
+		Modal
 	}
 }
 </script>
