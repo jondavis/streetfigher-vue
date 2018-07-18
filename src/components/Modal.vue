@@ -1,17 +1,35 @@
 <template>
-	<div class="overlay">
+	<div class="overlay" >
 		<div class="modal">
-			<div class="modal-close">
+			<div class="modal-close" @click="$emit('close')">
 				&times;
 			</div>
 			<div class="modal-content">
-				Game Over, Man! {{this.theWinner}} wins. Play again?
+				<!-- {{this.gameOverMessage}} -->
+
+				<p>Game Over, Man! <!-- {{this.theWinner}} wins. --> Play again?</p>
+				<custom-button :button-style="'plain'" @pressed="$emit('reset')">Challenge Accepted</custom-button>
 			</div>		
 		</div>	
 	</div>
 </template>
 
 <script>
+import CustomButton from './Button';
+export default {
+	
+	data() {
+		return {
+			
+		}
+	},
+	methods: {
+		
+	},
+	components: {
+		CustomButton
+	}
+}
 	
 </script>
 

@@ -1,3 +1,10 @@
+<!-- 
+TO DO: 
+* display gameOverMessage in modal
+* display "challenge accepted" text in modal button
+* set meter width to 0 if it's a negative number
+* handle resetting game
+-->
 <template>
 	<div id="app">
 		<h1>Street Fighter</h1>
@@ -17,13 +24,13 @@
 			<div class="column">
 				<custom-button :button-style="'green'" @pressed="handleAttackButton"></custom-button>
 				<custom-button :button-style="'red'" @pressed="handleSpecialAttackButton"></custom-button>
-				<button id="show-modal" @click="this.showModal = true">Show Modal</button>
+				<!-- <button id="show-modal" @click="this.showModal = true">Show Modal</button> -->
 			</div>
 			<div class="column">
 				<log :messages="messageLog"></log>
 			</div>
 		</div>
-		<modal  v-show="showModal"></modal>
+		<modal  v-show="showModal" @close="closeModal" @reset="resetGame"></modal>
 		<!-- modal -->
 			<!-- Game over text -->
 			<!-- Button (plain) -->
@@ -75,8 +82,12 @@ export default {
 		handleScoreKeeping: function(){
 			if (this.playerHealth < 1 || this.opponentHealth < 1) {
 				if (this.playerHealth >= this.opponentHealth) {
-					this.theWinner = "Player"
+					this.theWinner = "Player";
+					this.messageLog.push(`Player wins!`); 
+					let gameOverMessage = "You win! Play again?";
 				} else {
+					let gameOverMessage = "Opponent wins. Play again?";
+					this.messageLog.push(`Opponent wins!`); 
 					this.theWinner = "Opponent"
 				}
 				
@@ -84,11 +95,17 @@ export default {
 			} 
 		},
 		handleGameOver: function(){
-			//this.showModal = true;
 			this.gameInPlay = false;
 			this.showModal = true;
-			this.gameOverMessage = `Game Over, Man! ${this.theWinner} wins. Play again?`;
-			//alert(this.gameOverMessage);
+			console.log(this.gameOverMessage);
+		},
+		closeModal: function(){
+			this.showModal = false;
+			console.log('closeModal function called');
+		},
+		resetGame: function(){
+			this.showModal = false;
+			console.log('resetGame function called');
 		}
 	},
 	components: {
