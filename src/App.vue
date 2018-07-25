@@ -1,7 +1,6 @@
 <!-- 
 TO DO: 
 * set meter width to 0 if it's a negative number
-* handle resetting game
 -->
 <template>
 	<div id="app">
@@ -20,24 +19,21 @@ TO DO:
 		</div>
 		<div class="row">
 			<div class="column">
-				<custom-button :button-style="'green'" @pressed="handleAttackButton"></custom-button>
-				<custom-button :button-style="'red'" @pressed="handleSpecialAttackButton"></custom-button>
-				<!-- <button id="show-modal" @click="this.showModal = true">Show Modal</button> -->
+				<custom-button v-show="gameInPlay" :button-style="'green'" @pressed="handleAttackButton"></custom-button>
+				<custom-button v-show="gameInPlay" :button-style="'red'" @pressed="handleSpecialAttackButton"></custom-button>
 			</div>
 			<div class="column">
 				<log :messages="messageLog"></log>
 			</div>
 		</div>
 		<modal v-show="showModal" @close="closeModal">
-			{{this.gameOverMessage}}
-
-			<!-- <p>Game Over, Man! {{this.theWinner}} wins. Play again?</p> -->
+			<div>
+				<p>
+					{{this.gameOverMessage}}
+				</p>
+			</div>
 			<custom-button :button-style="'plain'" @pressed="resetGame">Challenge Accepted</custom-button>
 		</modal>
-		<!-- modal -->
-			<!-- Game over text -->
-			<!-- Button (plain) -->
-		<!--/ modal -->
 	</div>
 </template>
 
@@ -101,14 +97,21 @@ export default {
 			this.gameInPlay = false;
 			this.showModal = true;
 			console.log(this.gameOverMessage);
+			
 		},
 		closeModal: function(){
 			this.showModal = false;
 			console.log('closeModal function called');
 		},
 		resetGame: function(){
-			this.showModal = false;
 			console.log('resetGame function called');
+			this.playerHealth = 100;
+			this.opponentHealth = 100;
+			this.messageLog = [];
+			this.showModal = false;
+			this.gameInPlay = true;
+			this.gameOverMessage = "";
+			this.theWinner = "";
 		}
 	},
 	components: {
