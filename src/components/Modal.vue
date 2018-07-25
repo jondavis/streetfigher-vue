@@ -5,17 +5,14 @@
 				&times;
 			</div>
 			<div class="modal-content">
-				<!-- {{this.gameOverMessage}} -->
-
-				<p>Game Over, Man! <!-- {{this.theWinner}} wins. --> Play again?</p>
-				<custom-button :button-style="'plain'" @pressed="$emit('reset')">Challenge Accepted</custom-button>
+				<slot></slot>
 			</div>		
 		</div>	
 	</div>
 </template>
 
 <script>
-import CustomButton from './Button';
+//import CustomButton from './Button';
 export default {
 	
 	data() {
@@ -27,7 +24,7 @@ export default {
 		
 	},
 	components: {
-		CustomButton
+		//CustomButton
 	}
 }
 	

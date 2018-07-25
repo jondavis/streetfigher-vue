@@ -1,7 +1,5 @@
 <!-- 
 TO DO: 
-* display gameOverMessage in modal
-* display "challenge accepted" text in modal button
 * set meter width to 0 if it's a negative number
 * handle resetting game
 -->
@@ -30,7 +28,12 @@ TO DO:
 				<log :messages="messageLog"></log>
 			</div>
 		</div>
-		<modal  v-show="showModal" @close="closeModal" @reset="resetGame"></modal>
+		<modal v-show="showModal" @close="closeModal">
+			{{this.gameOverMessage}}
+
+			<!-- <p>Game Over, Man! {{this.theWinner}} wins. Play again?</p> -->
+			<custom-button :button-style="'plain'" @pressed="resetGame">Challenge Accepted</custom-button>
+		</modal>
 		<!-- modal -->
 			<!-- Game over text -->
 			<!-- Button (plain) -->
@@ -84,9 +87,9 @@ export default {
 				if (this.playerHealth >= this.opponentHealth) {
 					this.theWinner = "Player";
 					this.messageLog.push(`Player wins!`); 
-					let gameOverMessage = "You win! Play again?";
+					this.gameOverMessage = "You win! Play again?";
 				} else {
-					let gameOverMessage = "Opponent wins. Play again?";
+					this.gameOverMessage = "Opponent wins. Play again?";
 					this.messageLog.push(`Opponent wins!`); 
 					this.theWinner = "Opponent"
 				}
